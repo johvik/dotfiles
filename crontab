@@ -1,0 +1,4 @@
+# Daily/Weekly copies and Montly tar.bz2
+0 2   *   *   *    rsync -av source /home/xxx/rsync/daily > /dev/null
+0 3   *   *   0    rsync -av /home/xxx/rsync/daily/ /home/xxx/rsync/weekly > /dev/null
+0 4   1   *   *    tar -cvjf /home/xxx/rsync/monthly_$(date +%Y%m%d).tar.bz2 -C /home/xxx/rsync/daily/ . > /dev/null
