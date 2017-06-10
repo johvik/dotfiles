@@ -1,0 +1,28 @@
+
+module pm2 1.0;
+
+type pm2_home_t;
+files_type(pm2_home_t)
+
+type pm2_exec_t;
+files_type(pm2_exec_t)
+
+require {
+	type init_t;
+	class file { execute execute_no_trans getattr open read unlink };
+	class dir { write remove_name };
+}
+
+#============= init_t ==============
+allow init_t pm2_home_t:file { getattr open read unlink };
+allow init_t pm2_home_t:dir { write remove_name };
+allow init_t pm2_exec_t:file { execute execute_no_trans open read };
+
+# To install and fix permissions
+# make -f /usr/share/selinux/devel/Makefile pm2.pp
+# sudo semodule -i pm.pp
+# sudo semanage fcontext -a -t pm2_home_t "/home/pm2/.pm2(/.*)?"
+# restorecon -Rv /home/pm2/.pm2/
+# Assuming npm home = ~/.npm.packages
+# sudo semanage fcontext -a -t pm2_exec_t "/home/pm2/.npm-packages/lib/node_modules/pm2/bin(/.*)?"
+# restorecon -Rv /home/pm2/.npm-packages/lib/node_modules/pm2/bin/
