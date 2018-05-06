@@ -1,2 +1,3 @@
 # Configuration
-Change Default Search Engine
+* Change Default Search Engine
+* Customize layout
