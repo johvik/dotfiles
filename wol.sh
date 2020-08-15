@@ -1,14 +1,15 @@
 #!/bin/sh
 
 # iptables -I FORWARD 1 -p tcp -d <ip> --dport 22 -m limit --limit 12/hour --limit-burst 1 -j LOG --log-prefix "WOL_LOG: " --log-level 7
-# crontab: * * * * * /etc/wol.sh
+# crontab: */2 * * * * /etc/wol.sh
 
-LAST_ACCESS=`logread -t -l 50 | grep "WOL_LOG:" | tail -n 1 | awk '{ print $6 }' | sed -ne 's/^\[\([0-9]*\)\.[0-9]*\]$/\1/p'`
-if [ -n $LAST_ACCESS ]; then
-  NOW=`date +%s`
-  COMPARE=`expr $NOW - 90` # In seconds
+LOGS=`logread -t -l 50`
+LAST_WOL_TRIGGER=`echo "$LOGS" | grep "WOL_LOG:" | tail -n 1 | awk '{ print $6 }' | sed -ne 's/^\[\([0-9]*\)\.[0-9]*\]$/\1/p'`
+if [ -n "$LAST_WOL_TRIGGER" ]; then
+  LAST_WOL_SENT=`echo "$LOGS" | grep "Sent Wake-On-LAN" | tail -n 1 | awk '{ print $6 }' | sed -ne 's/^\[\([0-9]*\)\.[0-9]*\]$/\1/p'`
 
-  if [ $LAST_ACCESS -ge $COMPARE ]; then
+  if [ -z "$LAST_WOL_SENT" ] || [ "$LAST_WOL_TRIGGER" -gt "$LAST_WOL_SENT" ]; then
     etherwake -i br-lan <mac>
+    logger "Sent Wake-On-LAN"
   fi
 fi
