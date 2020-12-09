@@ -1,9 +1,11 @@
 # Packages
 ```
 sudo dnf install vim
-sudo dnf install owncloud-client
 sudo dnf install keepass
 ```
+
+# Google drive
+https://github.com/odeke-em/drive
 
 # Configuration
 ## KeePass
