@@ -1,6 +1,7 @@
 # Packages
 ```
 sudo dnf install vim
+sudo dnf install vim-default-editor --allowerasing
 sudo dnf install keepass
 ```
 
