@@ -5,3 +5,4 @@ user_pref("geo.enabled", false);
 user_pref("browser.pocket.enabled", false);
 user_pref("extensions.pocket.enabled", false);
 user_pref("media.autoplay.enabled", false);
+user_pref("pdfjs.ignoreDestinationZoom", true);
