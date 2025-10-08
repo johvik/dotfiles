@@ -18,11 +18,18 @@ Google drive sync before start and on exit (e.g. ~/bin/keepassxc):
 ```
 #!/bin/bash
 
-gnome-terminal --wait -- <go drive path>/drive-google pull <db path>/db.kdbx
+# See https://rclone.org/drive/ for setting it up
+ptyxis -- rclone sync --interactive googledrive:<path> <db path> &
+wait # If syncing more than one
+
+#gnome-terminal --wait -- <go drive path>/drive-google pull <db path>/db.kdbx
 
 /usr/bin/keepassxc
 
-gnome-terminal --wait -- <go drive path>/drive-google push <db path>/db.kdbx
+ptyxis -- rclone sync --interactive <db path> googledrive:<path> &
+wait
+
+#gnome-terminal --wait -- <go drive path>/drive-google push <db path>/db.kdbx
 ```
 
 Configurations:
